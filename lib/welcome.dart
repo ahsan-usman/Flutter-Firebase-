@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase/authentication/auth_controller.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,31 +66,38 @@ class Welcome extends StatelessWidget {
             ),
           ),
           SizedBox(height: 40,),
-          Container(
-            width: w*0.5,
-            height: h*0.08,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                image: DecorationImage(
-                  image: AssetImage(
-                      "images/loginbtn.png"
+          
+          
+          GestureDetector(
+            onTap: (){
+              AuthController.instance.logout();
+            },
+            child: Container(
+              width: w*0.5,
+              height: h*0.08,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(
+                    image: AssetImage(
+                        "images/loginbtn.png"
+                    ),
+                    fit: BoxFit.cover,
+                  )
+              ),
+              child: Center(
+                child: Text(
+                  "Sign out",
+                  style: TextStyle(
+                    fontSize: 30 ,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
                   ),
-                  fit: BoxFit.cover,
-                )
-            ),
-            child: Center(
-              child: Text(
-                "Sign out",
-                style: TextStyle(
-                  fontSize: 30 ,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
                 ),
               ),
+
+
             ),
-
-
           ),
           SizedBox(height: w*0.1,),
 
