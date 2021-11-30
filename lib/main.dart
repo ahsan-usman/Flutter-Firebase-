@@ -1,11 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase/authentication/auth_controller.dart';
 import 'package:flutter_firebase/sign_up.dart';
-import 'package:flutter_firebase/welcome.dart';
+import 'package:flutter_firebase/splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+Future<void> main() async {
+
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().then((value) => Get.put(AuthController()));
+
+
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -13,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: SplashScreen(),
     );
   }
 }
@@ -47,8 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit: BoxFit.cover,
               )
             ),
-
-
           ),
           Container(
             margin: const EdgeInsets.only(left: 20, right: 20),
@@ -89,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ]
                   ),
                   child: TextField(
+                    controller: email,
                     decoration: InputDecoration(
                       hintText: "Your Email Address",
                       prefixIcon: Icon(Icons.email, color: Colors.deepOrangeAccent,),
@@ -126,6 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ]
                   ),
                   child: TextField(
+                    controller: password,
+                    obscureText: true,
                     decoration: InputDecoration(
                       hintText: "Your Password",
                       prefixIcon: Icon(Icons.password, color: Colors.deepOrangeAccent,),
@@ -152,31 +162,34 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           SizedBox(height: 40,),
-          Container(
-            width: w*0.5,
-            height: h*0.08,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-                image: DecorationImage(
-                  image: AssetImage(
-                      "images/loginbtn.png"
+          GestureDetector(
+            onTap: (){
+              AuthController.instance.login(email.text.trim(), password.text.trim());
+            },
+            child: Container(
+              width: w*0.5,
+              height: h*0.08,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(
+                    image: AssetImage(
+                        "images/loginbtn.png"
+                    ),
+                    fit: BoxFit.cover,
+                  )
+              ),
+              child: Center(
+                child: Text(
+                  "Sign in",
+                  style: TextStyle(
+                    fontSize: 30 ,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
                   ),
-                  fit: BoxFit.cover,
-                )
-            ),
-            child: Center(
-              child: Text(
-                "Sign in",
-                style: TextStyle(
-                  fontSize: 30 ,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
                 ),
               ),
             ),
-
-
           ),
           SizedBox(height: w*0.2,),
 

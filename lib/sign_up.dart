@@ -1,20 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase/authentication/auth_controller.dart';
+import 'package:flutter_firebase/welcome.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'main.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  _SignUpPageState createState() => _SignUpPageState();
+}
+class _SignUpPageState extends State<SignUpPage> {
+  var emailController= TextEditingController();
+  var passwordController = TextEditingController();
 
-    List images =[
+@override
+  Widget build(BuildContext context) {
+  /*
+  List images =[
     "f.png",
     "g.png",
     "t.png"
     ];
+   */
 
     double  w =MediaQuery.of(context).size.width;
     double  h =MediaQuery.of(context).size.height;
@@ -77,6 +89,7 @@ class SignUpPage extends StatelessWidget {
                       ]
                   ),
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       hintText: "Your Email Address",
                       prefixIcon: Icon(Icons.email, color: Colors.deepOrangeAccent,),
@@ -114,6 +127,8 @@ class SignUpPage extends StatelessWidget {
                       ]
                   ),
                   child: TextField(
+                    controller: passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       hintText: "Your Password",
                       prefixIcon: Icon(Icons.password, color: Colors.deepOrangeAccent,),
@@ -140,31 +155,36 @@ class SignUpPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 40,),
-          Container(
-            width: w*0.5,
-            height: h*0.08,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                image: DecorationImage(
-                  image: AssetImage(
-                      "images/loginbtn.png"
+          GestureDetector(
+            onTap: (){
+              AuthController.instance.register(emailController.text.trim(), passwordController.text.trim());
+            },
+            child: Container(
+              width: w*0.5,
+              height: h*0.08,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(
+                    image: AssetImage(
+                        "images/loginbtn.png"
+                    ),
+                    fit: BoxFit.cover,
+                  )
+              ),
+              child: Center(
+                child: Text(
+                  "Sign up",
+                  style: TextStyle(
+                    fontSize: 30 ,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
                   ),
-                  fit: BoxFit.cover,
-                )
-            ),
-            child: Center(
-              child: Text(
-                "Sign up",
-                style: TextStyle(
-                  fontSize: 30 ,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
                 ),
               ),
+
+
             ),
-
-
           ),
           SizedBox(height: w*0.1,),
 
@@ -192,28 +212,33 @@ class SignUpPage extends StatelessWidget {
 
           Wrap(
             children: List.generate(
-              3,
+              1,
                 (index){
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.white54,
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage(
-                        "images/" +images[index]
+
+                    child: GestureDetector(
+                      onTap: (){
+                      },
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage(
+                          "images/g.png"
+                        ),
                       ),
                     ),
                   ),
                 );
                 }
-
             ),
           )
-
         ],
       ),
     );
   }
 }
+
+
